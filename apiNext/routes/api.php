@@ -19,9 +19,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'AuthController@login');
-    Route::get('logout', 'AuthController@logout');
     
     Route::group([ 'middleware' => 'auth:api'], function() {
+        Route::get('logout', 'AuthController@logout');
         Route::post('signup', 'AuthController@signUp');
         Route::get('user', 'AuthController@user');
     });

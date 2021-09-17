@@ -16,8 +16,24 @@ const Sidebar = () => {
             <div class="navbar-content scroll-div">
                 <ul class="nav pcoded-inner-navbar ">
                     <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" class="nav-item pcoded-hasmenu">
-                        <a href="#" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Components</span></a>
+                        <a href="#" class="nav-link "><span class="pcoded-micon"><i class="feather icon-settings"></i></span><span class="pcoded-mtext">Gestión</span></a>
                         <ul class="pcoded-submenu" style={{display: 'block'}}>
+
+                            <li class=""><a href="bc_button.html" class=""><i class="feather icon-users"></i> Usuarios</a></li>
+                           
+                        </ul>
+                    </li>
+                    <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" class="nav-item pcoded-hasmenu">
+                        <a href="#" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Components</span></a>
+                        <ul class="pcoded-submenu" style={{display: 'none'}}>
+
+                            <li class=""><a href="bc_button.html" class="">Button</a></li>
+                           
+                        </ul>
+                    </li>
+                    <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" class="nav-item pcoded-hasmenu">
+                        <a href="#" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Components</span></a>
+                        <ul class="pcoded-submenu" style={{display: 'none'}}>
 
                             <li class=""><a href="bc_button.html" class="">Button</a></li>
                            

@@ -12,7 +12,11 @@ var base64 = require('base-64');
 
 const baseUrl = "http://127.0.0.1:8000/api/";
 let storage = JSON.parse(sessionStorage.getItem('token'))
-let decoded= JSON.parse(base64.decode(storage))
+let decoded={token:''}
+if (storage) {
+    
+decoded= JSON.parse(base64.decode(storage))
+}
 class Request {
 
     get(url, data) {

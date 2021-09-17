@@ -1,6 +1,16 @@
 import React from 'react';
-
-const Header = () => {
+import Request from '../../utils/http';
+const request = new Request();
+const Header = (props) => {
+    const {history} = props;
+    async function logout()
+    {
+    let response = await request.get('auth/logout')
+    if (response && response.statusCode==200) {
+        window.sessionStorage.removeItem('token')
+        window.location.replace("/");
+    }
+    }
     return (
         <header class="navbar pcoded-header navbar-expand-lg navbar-light">
         <div class="m-header">
@@ -17,9 +27,9 @@ const Header = () => {
         </a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
-                <li><a href="javascript:" class="full-screen" onclick="javascript:toggleFullScreen()"><i class="feather icon-maximize"></i></a></li>
+                <li><a class="full-screen" onclick="javascript:toggleFullScreen()"><i class="feather icon-maximize"></i></a></li>
                 <li class="nav-item dropdown">
-                    <a class="dropdown-toggle" href="javascript:" data-toggle="dropdown">Dropdown</a>
+                    <a class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="javascript:">Action</a></li>
                         <li><a class="dropdown-item" href="javascript:">Another action</a></li>
@@ -30,7 +40,7 @@ const Header = () => {
                     <div class="main-search">
                         <div class="input-group">
                             <input type="text" id="m-search" class="form-control" placeholder="Search . . ." />
-                            <a href="javascript:" class="input-group-append search-close">
+                            <a class="input-group-append search-close">
                                 <i class="feather icon-x input-group-text"></i>
                             </a>
                             <span class="input-group-append search-btn btn btn-primary">
@@ -43,12 +53,12 @@ const Header = () => {
             <ul class="navbar-nav ml-auto">
                 <li>
                     <div class="dropdown">
-                        <a class="dropdown-toggle" href="javascript:" data-toggle="dropdown"><i class="icon feather icon-bell"></i></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown"><i class="icon feather icon-bell"></i></a>
                         <div class="dropdown-menu dropdown-menu-right notification">
                             <div class="noti-head">
                                 <h6 class="d-inline-block m-b-0">Notifications</h6>
                                 <div class="float-right">
-                                    <a href="javascript:" class="m-r-10">mark as read</a>
+                                    <a class="m-r-10">mark as read</a>
                                     <a href="javascript:">clear all</a>
                                 </div>
                             </div>
@@ -95,20 +105,20 @@ const Header = () => {
                 </li>
                 <li>
                     <div class="dropdown drp-user">
-                        <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
                             <i class="icon feather icon-settings"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right profile-notification">
                             <div class="pro-head">
                                 <img src="assets/images/user/avatar-1.jpg" class="img-radius" alt="User-Profile-Image"/>
                                 <span>John Doe</span>
-                                <a href="auth-signin.html" class="dud-logout" title="Logout">
+                                <button class="dud-logout btn" title="Logout" onClick={logout}>
                                     <i class="feather icon-log-out"></i>
-                                </a>
+                                </button>
                             </div>
                             <ul class="pro-body">
-                                <li><a href="javascript:" class="dropdown-item"><i class="feather icon-settings"></i> Settings</a></li>
-                                <li><a href="javascript:" class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
+                                <li><a class="dropdown-item"><i class="feather icon-settings"></i> Settings</a></li>
+                                <li><a class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
                                 <li><a href="message.html" class="dropdown-item"><i class="feather icon-mail"></i> My Messages</a></li>
                                 <li><a href="auth-signin.html" class="dropdown-item"><i class="feather icon-lock"></i> Lock Screen</a></li>
                             </ul>

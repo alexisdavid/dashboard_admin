@@ -27,6 +27,7 @@ const PageIndex = (props) => {
         };
     
         const response = await request.post("auth/login", data);
+        console.log("🚀 ~ file: PageIndex.js ~ line 30 ~ handleSubmit ~ response", response)
           if (response && response.statusCode==200 ) {
             let token = {
              user:response.result.user,
@@ -35,8 +36,7 @@ const PageIndex = (props) => {
             let datos = JSON.stringify(token);
             userInfo = base64.encode(datos);
             window.sessionStorage.setItem("token", JSON.stringify(userInfo));
-           
-            props.history.push('/home');
+            window.location.replace('/home');
             
           } 
       };
