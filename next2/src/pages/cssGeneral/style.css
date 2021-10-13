@@ -1,0 +1,11 @@
+body{
+    background-color: rgb(238, 246, 251)!important;
+}
+.logotipo{
+    display: flex;
+    background-color:white;
+
+}
+.login{
+    border-radius: 25px!important;
+}

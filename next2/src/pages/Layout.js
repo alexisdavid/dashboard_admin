@@ -8,28 +8,24 @@ const Layout = (props) => {
     });
     return (
         <>
-            <Sidebar />
-            <Header />
-            <div class="pcoded-main-container">
-                <div class="pcoded-wrapper">
-                    <div class="pcoded-content">
-                        <div class="pcoded-inner-content">
-                            <div class="main-body">
-                                <div class="page-wrapper">
-                           
-                                    <div class="row">
-                                        <div class="col-sm-12">
 
-                                            {children}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <Header />
+            <div id="layoutSidenav">
+
+            <Sidebar />
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                    {children}
                         </div>
-                    </div>
+                </main>
                 </div>
             </div>
-            
+        
+
+               
+            {/* </div> */}
+
         </>
     );
 };

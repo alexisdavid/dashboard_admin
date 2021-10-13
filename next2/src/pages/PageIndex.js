@@ -1,34 +1,26 @@
-import React,{useEffect, useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import Request from '../utils/http'
+import imagen from '../static/logo.jpg'
 var base64 = require('base-64');  
 const request = new Request();
 
 
 
 
-
 const PageIndex = (props) => {
-    const {history} = props;
-    const [user,setUser]= useState('')
-    const [password,setPassword]= useState('')
+    const {history}=props;
+    const [credentials,setCredentials] = useState({user:'',password:''})
     useEffect(() => {
         const isAuth = window.sessionStorage.getItem("token");
-        if (isAuth) {
-          
-          history.push('/home');
-          // window.location('/dashboard');
-        }
+        if (isAuth)  history.push('/home');
       });
-      const handleSubmit = async () => {
+    const handleChange=(e) =>   setCredentials({...credentials,[e.target.name]:e.target.value})
+
+    const login =async (e)=>{
+        e.preventDefault();
         let userInfo;
-        let data = {
-            userCode: user,
-            password: password,
-        };
-    
-        const response = await request.post("auth/login", data);
-        console.log("🚀 ~ file: PageIndex.js ~ line 30 ~ handleSubmit ~ response", response)
-          if (response && response.statusCode==200 ) {
+        const response = await request.post('auth/login',{userCode:credentials.user,password:credentials.password}) 
+        if (response && response.statusCode==200 ) {
             let token = {
              user:response.result.user,
               token: response.result.access_token
@@ -36,40 +28,49 @@ const PageIndex = (props) => {
             let datos = JSON.stringify(token);
             userInfo = base64.encode(datos);
             window.sessionStorage.setItem("token", JSON.stringify(userInfo));
-            window.location.replace('/home');
+            // window.location.replace('/home');
+            history.push('/home')
             
-          } 
-      };
+          }
+    }
+ 
     return (
         
-      <div class="auth-wrapper">
-      <div class="auth-content">
-          <div class="auth-bg">
-              <span class="r"></span>
-              <span class="r s"></span>
-              <span class="r s"></span>
-              <span class="r"></span>
-          </div>
-          <div class="card">
-              <div class="card-body text-center">
-                  <div class="mb-4">
-                      <i class="feather icon-user-plus auth-icon"></i>
+      <div id="layoutAuthentication">
+      <div id="layoutAuthentication_content">
+          <main>
+              <div className="container     ">
+                  <div className="row justify-content-center mt-5">
+                      <div className="col-lg-5">
+                          <div className="card shadow-lg border-0 rounded-lg mt-5 login">
+                              <div className="card-header logotipo justify-content-center login">
+                                  <img src={imagen} />
+                              </div>
+                              <div className="card-body">
+                                  <form onSubmit={(e)=>login(e)}>
+                                      <div className="form-group">
+                                          <label className="small mb-1" htmlFor="inputEmailAddress">Usuario</label>
+                                          <input className="form-control py-4" id="inputUser" name='user' onChange={handleChange} type="text" placeholder="Ingrese Usuario" />
+                                      </div>
+                                      <div className="form-group">
+                                          <label className="small mb-1" htmlFor="inputPassword">Password</label>
+                                          <input className="form-control py-4" id="inputPassword" name='password'  onChange={handleChange} type="password" placeholder="Ingrese password" />
+                                      </div>
+                                     
+                                      <div className="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                                          <label className="small" >Olvidaste tu password? Contacta a sistemas</label>
+                                          <button className="btn btn-primary" type="submit">Entrar</button>
+                                      </div>
+                                  </form>
+                              </div>
+                             
+                          </div>
+                      </div>
                   </div>
-                  <h3 class="mb-4">Iniciar Sesion</h3>
-                  <div class="input-group mb-3">
-                      <input type="text" class="form-control" value={user} onChange={e=>setUser(e.target.value)} placeholder="Username"/>
-                  </div>
-                  
-                  <div class="input-group mb-4">
-                      <input type="password" class="form-control" value={password} onChange={e=>setPassword(e.target.value)} placeholder="password"/>
-                  </div>
-                  
-                 
-                  <button class="btn btn-primary shadow-2 mb-4" onClick={handleSubmit}>Login</button>
-                 
               </div>
-          </div>
+          </main>
       </div>
+      
   </div>
     );
 };

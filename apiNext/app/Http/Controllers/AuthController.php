@@ -44,7 +44,7 @@ class AuthController extends Controller
         $request->validate([
             'userCode' => 'required|string',
             'password' => 'required|string',
-            'remember_me' => 'boolean'
+           
         ]);
 
         $credentials = request(['userCode', 'password']);
