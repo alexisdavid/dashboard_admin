@@ -6162,7 +6162,9 @@ button.bg-light:hover,
 button.bg-light:focus {
   background-color: #dae0e5 !important;
 }
-
+.color-white{
+  color: #fff!important;
+}
 .bg-dark {
   background-color: #343a40 !important;
 }

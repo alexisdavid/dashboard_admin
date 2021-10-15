@@ -26,3 +26,9 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('user', 'AuthController@user');
     });
 });
+Route::group(['prefix' => 'menusList'], function () {
+    Route::group([ 'middleware' => 'auth:api'], function() {
+        Route::get('getMenus', 'MenusModelController@index');
+      
+    });
+});

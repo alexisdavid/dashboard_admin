@@ -28,8 +28,8 @@ const PageIndex = (props) => {
             let datos = JSON.stringify(token);
             userInfo = base64.encode(datos);
             window.sessionStorage.setItem("token", JSON.stringify(userInfo));
-            // window.location.replace('/home');
-            history.push('/home')
+            window.location.replace('/home');
+            // history.push('/home')
             
           }
     }

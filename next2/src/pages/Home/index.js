@@ -1,9 +1,10 @@
 import React from 'react'
+
 import Layout from '../Layout'
 import Request from '../../utils/http'
 const request = new Request()
 
-export default function HomeComponent() {
+ function HomeComponent(props) {
    
     async function logout()
     {
@@ -21,4 +22,5 @@ export default function HomeComponent() {
       
     )
 }
+export default HomeComponent
 

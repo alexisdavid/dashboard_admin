@@ -15,8 +15,15 @@ const Layout = (props) => {
             <Sidebar />
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid">
-                    {children}
+                    <div className="container-fluid ">
+                    <div className="card mt-3">
+                        <div className="card-body" >
+
+                    
+                                {children}
+                        </div>
+
+                    </div>
                         </div>
                 </main>
                 </div>

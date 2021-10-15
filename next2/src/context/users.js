@@ -1,4 +1,5 @@
-
+import Request from '../utils/http';
+const request = new Request()
 var base64 = require('base-64');
 
 export async function loadUser() {
@@ -26,6 +27,15 @@ export async function loadUser() {
       return JSON.parse( user);
     }
   }
+export async function getMenus(){
+  const response = await request.get('menusList/getMenus')
+  if (response && response.statusCode==200) {
+    
+    return response.result
+  }else{
+    return 'Error'
+  }
+}
   
  
   
