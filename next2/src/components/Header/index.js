@@ -15,8 +15,8 @@ export default function index() {
     
     return (
         <nav className="sb-topnav navbar navbar-expand bg-hanan-nav">
-        <img src={logo} className='img-logo'/>
-        <button className="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i className="fas fa-bars fa-2x color-white"></i></button>
+        <img src={logo} className='img-logo' title='logo' alt='logo' />
+        <button className="btn btn-link btn-sm order-1 order-lg-0" title="Esconder" id="sidebarToggle" href="#"><i className="fas fa-bars fa-2x color-white"></i></button>
        
         <form className="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
             <div className="input-group">
@@ -29,7 +29,7 @@ export default function index() {
        
         <ul className="navbar-nav ml-auto ml-md-0">
             <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle color-white" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-user fa-fw color-white"></i></a>
+                <a className="nav-link dropdown-toggle color-white" title='open' id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fas fa-user fa-fw color-white"></i></a>
                 <div className="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                     
                     <span className="dropdown-item"onClick={logout} >Cerrar Sesión</span>

@@ -17,7 +17,9 @@ const request = new Request()
     return (
        
             <Layout>
-           <button className="btn btn-primary" onClick={logout}>Logout</button>
+                <div className='justify-end'>
+                    <button className="btn btn-success " onClick={logout}>Logout</button>
+                </div>
             </Layout>
       
     )

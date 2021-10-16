@@ -19,16 +19,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'AuthController@login');
-    
     Route::group([ 'middleware' => 'auth:api'], function() {
-        Route::get('logout', 'AuthController@logout');
         Route::post('signup', 'AuthController@signUp');
+        Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
     });
 });
 Route::group(['prefix' => 'menusList'], function () {
     Route::group([ 'middleware' => 'auth:api'], function() {
         Route::get('getMenus', 'MenusModelController@index');
-      
+    });
+});
+Route::group(['prefix' => 'users'], function () {
+    Route::group([ 'middleware' => 'auth:api'], function() {
+        Route::get('/usersList', 'UsersController@index');
     });
 });
