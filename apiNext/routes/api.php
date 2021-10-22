@@ -19,6 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'AuthController@login');
+    
     Route::group([ 'middleware' => 'auth:api'], function() {
         Route::post('signup', 'AuthController@signUp');
         Route::get('logout', 'AuthController@logout');
@@ -30,8 +31,14 @@ Route::group(['prefix' => 'menusList'], function () {
         Route::get('getMenus', 'MenusModelController@index');
     });
 });
+Route::group(['prefix' => 'departments'], function () {
+    Route::group([ 'middleware' => 'auth:api'], function() {
+        Route::get('getDepartments', 'DepartmentController@index');
+    });
+});
 Route::group(['prefix' => 'users'], function () {
     Route::group([ 'middleware' => 'auth:api'], function() {
         Route::get('/usersList', 'UsersController@index');
+        Route::post('/store', 'UsersController@store');
     });
 });

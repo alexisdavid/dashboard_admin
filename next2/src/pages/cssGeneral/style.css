@@ -39,6 +39,34 @@ body{
     background-color:#22be22 !important;
     color: #fff;
 }   
-.hanan-success :hover{
-    color: #fff!important;
+ .hanan-success :hover{
+    color: #fff !important;
+}
+.Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(58, 54, 63, 0.575);
+    z-index: 1040;
+  }
+
+  @media (max-width: 576px) {
+      .ReactModal__Content{
+        width: 80% !important;
+        height: 85% !important;
+    }
+    
+}
+  @media (max-width: 768px) {
+      .ReactModal__Content{
+        width: 80% !important;
+        height: 75% !important;
+    }
+    
+}
+.ReactModal__Content {
+    width:30%;
+    height: 85%;
 }
