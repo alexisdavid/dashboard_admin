@@ -33,7 +33,7 @@ export default function PageUsers() {
 
         <Layout>
             <div className='justify-end'>
-                <button className="btn btn-sm  hanan-success" onClick={(e) => setOpen(true)}>Nuevo</button>
+                <button className="btn btn-sm  hanan-success" onClick={(e) => setOpen(true)}><i className='feather icon-user-plus'></i> Nuevo</button>
             </div>
             <PaginateTable data={data} header={header} />
             <PaginateButtons options={options} fetchData={fetchData} />

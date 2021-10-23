@@ -7659,16 +7659,16 @@ a.btn-theme.active {
 }
 
 .btn {
-  padding: 10px 20px;
+  padding: 5px 10px;
   border-radius: 0.25rem;
   font-size: 14px;
   margin-bottom: 5px;
-  margin-right: 10px;
+  margin-right: 0px;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .btn > i {
-  margin-right: 12px;
+  margin-right: 2px;
 }
 .btn.btn-icon, .btn.drp-icon {
   width: 45px;

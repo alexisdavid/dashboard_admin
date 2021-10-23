@@ -1,4 +1,5 @@
 import React,{ useEffect, useState} from 'react'
+import Refill from './Refill'
 export default function PaginateTable(props) {
     const {data,header} = props
     const [columns,setColumns]= useState([])
@@ -21,10 +22,11 @@ export default function PaginateTable(props) {
                     {data.map((data,d)=>(
                         <tr key={d}>
                             {columns.map((column,c)=>(
-                                <td key={c}>{data[column.body]}</td>
+                                <td style={{height:'25px'}} key={c}>{data[column.body]}</td>
                             ))}
                         </tr>
                     ))}
+                    <Refill numColumns={10-data.length} rows={columns.length}/>
                 </tbody>
 
             </table>
