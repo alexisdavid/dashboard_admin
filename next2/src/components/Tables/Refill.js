@@ -18,10 +18,8 @@ export default function Refill(props) {
     setColumns(nc)
     setRows(rs)
    },[numColumns,rows])
-    return (
-        
-            columns.map(()=>(
-                <tr style={{height:'55px'}}>
+    return (  columns.map((d,k)=>(
+                <tr key={k} style={{height:'55px'}}>
                     {rowsR.map(()=>(
                         <>
                         <td ></td>

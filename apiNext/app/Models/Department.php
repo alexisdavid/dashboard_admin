@@ -12,4 +12,9 @@ class Department extends Model
     {
         return $this->hasMany('App\Models\Groups');
     }
+    protected $fillable = [
+        'departmentName',
+        'active'
+    
+    ];
 }

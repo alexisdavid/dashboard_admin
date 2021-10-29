@@ -16,6 +16,7 @@ body{
 }
 .table-hanan tbody tr:hover {
     background-color: #b5ff6588 !important;
+    cursor: pointer;
 }
 .table-hanan tr th:first-child {
     border-radius:20px 0px 0px 0px!important;

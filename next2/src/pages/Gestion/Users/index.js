@@ -7,9 +7,6 @@ import ModalUsers from './components/ModalUsers/ModalUsers'
 
 const header = [{ body: 'codigo', label: 'Código de usuario' }, { body: 'nombre', label: 'Nombre' }, { body: 'email', label: 'Email' }, { body: 'dpto', label: 'Departamento' }, { body: 'fecha', label: 'Fecha de creación' }, { body: 'acc', label: 'Acciones' }]
 
-
-
-
 export default function PageUsers() {
     const [data, setData] = useState([])
     const [isOpen, setOpen] = useState(false)

@@ -1,7 +1,7 @@
 import React,{ useEffect, useState} from 'react'
 import Refill from './Refill'
 export default function PaginateTable(props) {
-    const {data,header} = props
+    const {data,header,handleEdit=()=>{}} = props
     const [columns,setColumns]= useState([])
 
     useEffect(() => {
@@ -19,10 +19,10 @@ export default function PaginateTable(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((data,d)=>(
-                        <tr key={d}>
+                    {data.map((datos,d)=>(
+                        <tr key={d} onClick={()=>handleEdit(datos)}>
                             {columns.map((column,c)=>(
-                                <td style={{height:'25px'}} key={c}>{data[column.body]}</td>
+                                <td style={{height:'25px'}} key={c}>{datos[column.body]}</td>
                             ))}
                         </tr>
                     ))}

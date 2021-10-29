@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Groups;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Validator;
 class DepartmentController extends Controller
 {
     /**
@@ -39,7 +41,28 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [ 'departmentName' => $request->departmentName, 'active' => 1 ];
+        $groups= $request->groups;
+        $validator = Validator::make($data, [  'departmentName' => 'required |min:5' ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+          return response()->json(['success' => false, 'error' => $errors], 200);
+        }else{
+            $department=new Department($data);
+            $department->save();
+
+            if ($department->id>0 ) {
+                foreach ($groups as $item) {
+                    $group = new Groups();
+                    $group->department_id=$department->id;
+                    $group->descriptions=$item['descriptions'];
+                    $group->active=$item['active'];
+                    $group->save();
+                }
+            }
+            return response()->json([ 'success' => true,'message' => 'Successfully created department!'], 201);
+        }
+       
     }
 
     /**
@@ -73,7 +96,30 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
-        //
+        $data = [ 'departmentName' => $request->departmentName, 'active' => 1,'id' => $request->id];
+        $groups= $request->groups;
+        $validator = Validator::make($data, [  'departmentName' => 'required |min:5' ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+          return response()->json(['success' => false, 'error' => $errors], 200);
+        }else{
+
+            
+            $department=Department::find($data['id'])->update(['departmentName'=>$data['departmentName'],'active'=>$data['active']]);
+            $groups=Groups::where('department_id','=',$data['id'] )->delete();
+           
+            $groups= $request->groups;
+            if ($data['id']>0 ) {
+                foreach ($groups as $item) {
+                    $group = new Groups();
+                    $group->department_id=$data['id'];
+                    $group->descriptions=$item['descriptions'];
+                    $group->active=$item['active'];
+                    $group->save();
+                }
+            }
+            return response()->json([ 'success' => true,'message' => 'Successfully created department!'], 201);
+        } 
     }
 
     /**

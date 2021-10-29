@@ -34,6 +34,8 @@ Route::group(['prefix' => 'menusList'], function () {
 Route::group(['prefix' => 'departments'], function () {
     Route::group([ 'middleware' => 'auth:api'], function() {
         Route::get('getDepartments', 'DepartmentController@index');
+        Route::post('save', 'DepartmentController@store');
+        Route::post('update', 'DepartmentController@update');
     });
 });
 Route::group(['prefix' => 'users'], function () {

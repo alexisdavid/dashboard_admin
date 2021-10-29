@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Modal from 'react-modal'
 import ToastComponent from '../../../../../components/toastComponent'
 import Request from '../../../../../utils/http'
@@ -18,47 +18,74 @@ const customStyles = {
 };
 export default function ModalGroups(props) {
   Modal.setAppElement('body');
-  const { open = false, setOpen = () => { }, reload, data } = props
+  const { open = false, setOpen = () => { }, reload, dataToEdit,edit=false,handleEdit=()=>{} } = props
 
   const [close, setClose] = useState(false)
   const [deparment, setDepartment] = useState({ id: 0, name: '' })
-  const [groups, setGroups] = useState([{  departments_id: 0, nombre: '', activo: 0 }])
+  const [groups, setGroups] = useState([{  department_id: 0, descriptions: '', active: 0 }])
   const [toast, setToast] = useState({
     showToast: false,
     mensaje: '',
     tipo: 'success'
   })
-  const [edit, setEdit] = useState(true)
+  useEffect(() => {
+    if (edit) {
+      setDepartment({ id: dataToEdit.id, name: dataToEdit.departmentName })
+      setGroups(dataToEdit.groupsList)
+    }
+  },[edit])
   const handleChange = (e) => setDepartment({ ...deparment, [e.target.name]: e.target.value })
   const addLine = () => {
     let copia = JSON.parse(JSON.stringify(groups))
-    copia.push({  departments_id: 0, nombre: '', activo: 0 })
+    copia.push({  departments_id: 0, descriptions: '', active: 0 })
     setGroups(copia)
     
   }
   const handleChangeLines = (e,key) => {
     let copia = JSON.parse(JSON.stringify(groups))
     if (e.target.name === 'nombre') {
-      copia[key].nombre = e.target.value
+      copia[key].descriptions = e.target.value
     }else{
-      copia[key].activo = e.target.checked==false?0:1
+      copia[key].active = e.target.checked==false?0:1
     }
     setGroups(copia)
   }
+  const handleclose = () => {
+    setDepartment({ id: 0, name: '' })
+    setGroups([{  departments_id: 0, descriptions: '', active: 0 }])
+    setOpen(false)
+    setClose(false)
+    handleEdit(false)
+
+ }
+  const validate=()=>{
+    let error = 0
+    for (let i = 0; i < groups.length; i++) {
+     if (groups[i].descriptions == '') error++
+    }
+    if (deparment.name =='' || error>0) {
+      setToast({ showToast: true, mensaje: 'Favor de completar los campos marcados en rojo', tipo: 'error' })
+    }else{
+      handleSubmit()
+    }
+    setTimeout(() => {
+      setToast({ showToast: false, mensaje: '', tipo: '' })
+    }, 3000);
+  }
   const handleSubmit = async () => {
     let data = {
-      // name: user.name,
-      // email: user.email,
-      // password: user.password,
-      // userCode: user.codUser,
-      // userName: user.name,
-      // userGroup: user.group,
-      // superUser: user.superUser == true ? 1 : 0,
-      // department: user.department,
-      // active: 0,
-      // image: '',
+      id:deparment.id,
+      departmentName: deparment.name,
+      groups: groups
     }
-    const response = await request.post('users/store', data)
+    let response 
+    if (edit) {
+      console.log(data);
+      response = await request.post('departments/update', data)
+    }else{
+      response = await request.post('departments/save', data)
+
+    }
     if (response && response.statusCode == 201) {
       setToast({ showToast: true, mensaje: 'Guardado con exito', tipo: 'success' })
       reload()
@@ -74,13 +101,8 @@ export default function ModalGroups(props) {
     }, 3000);
 
   }
-  const handleclose = () => {
-     setDepartment({ id: 0, name: '' })
-     setGroups([{  departments_id: 0, nombre: '', activo: 0 }])
-    setOpen(false)
-    setClose(false)
-
-  }
+  
+  
   return (
     <>
 
@@ -89,16 +111,12 @@ export default function ModalGroups(props) {
         <div className="col-md-6">
           <h5>Departamentos y grupos</h5>
         </div>
-        {!edit && <div className='col-md-6 justify-end mt-3'>
-          <button onClick={e => setOpen(false)} type="button" className="btn btn-outline-danger" title="btn btn-outline-danger" data-toggle="tooltip">
-            Cerrar
-          </button>
-        </div>}
+      
         <div className="row p-4">
 
           <div className="form-group col-md-12">
             <label for="nameUser">Nombre de Departamento</label>
-            <input type="text" className="form-control" value={deparment.name} onChange={handleChange} id="nameUser" name='name' />
+            <input type="text" className={`form-control ${deparment.name.length< 5?'border-danger':''} `} value={deparment.name} onChange={handleChange} id="nameUser" name='name' />
             {deparment.name.length < 5 && <small className="form-text text-danger">Campo Requerido. Minimo 5 caracteres</small>}
           </div>
           <div className="form-group col-md-12 justify-end">
@@ -119,11 +137,11 @@ export default function ModalGroups(props) {
                     {groups.map((group, i) => (
                       <tr key={i}>
                         <td>
-                          <input type='text' className='form-control' name='nombre' value={group.nombre} onChange={e=>handleChangeLines(e,i)} />
+                          <input type='text' className={`form-control ${group.descriptions.length< 1?'border-danger':''} `} name='nombre' value={group.descriptions} onChange={e=>handleChangeLines(e,i)} />
                         </td>
                         <td>
                           <div className="custom-control custom-checkbox ">
-                            <input type="checkbox" className="custom-control-input" id={`customCheck${i}`} name='activo' checked={group.activo==0?false:true} onChange={e=>handleChangeLines(e,i)} />
+                            <input type="checkbox" className="custom-control-input" id={`customCheck${i}`} name='activo' checked={group.active==0?false:true} onChange={e=>handleChangeLines(e,i)} />
                             <label className="custom-control-label" for={`customCheck${i}`}></label>
                           </div>
                         </td>
@@ -139,20 +157,20 @@ export default function ModalGroups(props) {
 
 
         </div>
-        {edit &&
+        
           <div className="row p-4">
             <div className='col-md-6 col-lg-6'>
-              {!close ? <button type="submit" onClick={handleSubmit} className="btn hanan-success" title="Guardar Cambios" data-toggle="tooltip">
-                Guardar
+              {!close ? <button type="submit" onClick={validate } className="btn hanan-success" title="Guardar Cambios" data-toggle="tooltip">
+              <i className="feather icon-save" ></i>  {edit?'Guardar Cambios':'Guardar'}
               </button> : null}
             </div>
             <div className='col-md-6 col-lg-6 justify-end'>
               <button onClick={handleclose} type="button" className="btn btn-outline-danger" title="btn btn-outline-danger" data-toggle="tooltip">
-                {close ? 'Cerrar' : 'Cancelar'}
+              <i className="feather icon-x" ></i> {close ? 'Cerrar' : 'Cancelar'}
               </button>
             </div>
           </div>
-        }
+        
       </Modal>
     </>
   )
