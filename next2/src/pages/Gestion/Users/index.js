@@ -32,7 +32,7 @@ export default function PageUsers() {
             <div className='justify-end'>
                 <button className="btn btn-sm  hanan-success" onClick={(e) => setOpen(true)}><i className='feather icon-user-plus'></i> Nuevo</button>
             </div>
-            <PaginateTable data={data} header={header} />
+            <PaginateTable data={data} header={header} handleEdit={[]} editMode={[]} editStatus={[]} />
             <PaginateButtons options={options} fetchData={fetchData} />
             <ModalUsers open={isOpen} setOpen={setOpen} reload={getUsers} />
         </Layout>

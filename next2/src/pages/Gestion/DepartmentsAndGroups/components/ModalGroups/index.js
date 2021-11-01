@@ -80,7 +80,7 @@ export default function ModalGroups(props) {
     }
     let response 
     if (edit) {
-      console.log(data);
+      
       response = await request.post('departments/update', data)
     }else{
       response = await request.post('departments/save', data)
