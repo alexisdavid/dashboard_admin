@@ -34,6 +34,7 @@ Route::group(['prefix' => 'menusList'], function () {
 Route::group(['prefix' => 'departments'], function () {
     Route::group([ 'middleware' => 'auth:api'], function() {
         Route::get('getDepartments', 'DepartmentController@index');
+        Route::get('getDepartmentsAll', 'DepartmentController@getDepartmentsAll');
         Route::post('save', 'DepartmentController@store');
         Route::post('update', 'DepartmentController@update');
     });
@@ -42,5 +43,6 @@ Route::group(['prefix' => 'users'], function () {
     Route::group([ 'middleware' => 'auth:api'], function() {
         Route::get('/usersList', 'UsersController@index');
         Route::post('/store', 'UsersController@store');
+        Route::post('/update', 'UsersController@update');
     });
 });

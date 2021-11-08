@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use  App\Models\User;
+use Illuminate\Support\Facades\Log;
 class UsersController extends Controller
 {
     /**
@@ -14,7 +15,24 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users=User::select('userCode as codigo','name as nombre','email as email','department as dpto','created_at as fecha')->orderBy('created_at','desc')->paginate(10);
+        $users=User::select('users.userCode as codigo','users.name as nombre','users.email as email','users.department as dpto',
+                            'users.created_at as fecha', 
+                            'users.id',   
+                            'users.userName', 
+                            'users.userGroup', 
+                            'users.superUser', 
+                            'users.active', 
+                            'users.image',  
+                            // 'departments.departmentName',
+                            // 'departments.id',
+                            // 'groups.descriptions',
+                            // 'groups.id as group_id'
+                            )
+        // ->join('departments','users.department','=','departments.id')
+        // ->join('groups','users.userGroup','=','groups.id')
+        ->orderBy('users.created_at','desc')
+        ->paginate(10);
+Log::info($users);
         return response()->json(['data'=>$users],200);
     }
 
@@ -93,9 +111,13 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+       
+
+
+
+        
     }
 
     /**

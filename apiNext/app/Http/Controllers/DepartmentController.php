@@ -22,6 +22,14 @@ class DepartmentController extends Controller
         }
         return response()->json(['data'=>$departments],200);
     }
+    public function getDepartmentsAll()
+    {
+        $departments = Department::all();
+        foreach ($departments as $department){
+            $department->groupsList = Department::find($department->id)->groups;
+        }
+        return response()->json(['data'=>$departments],200);
+    }
 
     /**
      * Show the form for creating a new resource.

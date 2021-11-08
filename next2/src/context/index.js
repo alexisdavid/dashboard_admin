@@ -1,6 +1,6 @@
 // @flow
 import React, { createContext, useState } from "react";
-import { loadUser,getMenus } from "./users";
+import { loadUser,getMenus,getDepartments } from "./users";
 import { useEffect } from "react";
 export const Context = createContext();
 
@@ -17,7 +17,7 @@ const GlobalContext = (props) => {
   }
  }
   return (
-    <Context.Provider value={{ loadUser, user,getMenus }}  >
+    <Context.Provider value={{ loadUser, user,getMenus,getDepartments }}  >
       {props.children}
     </Context.Provider>
   );

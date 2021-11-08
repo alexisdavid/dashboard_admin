@@ -3,15 +3,22 @@ import Layout from '../../Layout'
 import fetchNextData from '../../../Hooks/fetchNextData'
 import PaginateTable from '../../../components/Tables/PaginateTable'
 import PaginateButtons from '../../../components/Tables/PaginateButtons'
-import ModalUsers from './components/ModalUsers/ModalUsers'
+import ModalUsers from './components/ModalUsers'
 
-const header = [{ body: 'codigo', label: 'Código de usuario' }, { body: 'nombre', label: 'Nombre' }, { body: 'email', label: 'Email' }, { body: 'dpto', label: 'Departamento' }, { body: 'fecha', label: 'Fecha de creación' }, { body: 'acc', label: 'Acciones' }]
+const header = [{ body: 'codigo', label: 'Código de usuario' }, { body: 'nombre', label: 'Nombre' }, { body: 'email', label: 'Email' }, { body: 'dpto', label: 'Departamento' }, { body: 'fecha', label: 'Fecha de creación' }]
 
 export default function PageUsers() {
     const [data, setData] = useState([])
+    const [dataEdit, setDataEdit] = useState([])
+    const [edit, setEdit] = useState(false)
+    
     const [isOpen, setOpen] = useState(false)
     const [options, setOptions] = useState({ next: 'Siguiente', previous: 'Anterior', links: [] })
-    useEffect(() => { getUsers() }, [])
+    
+    useEffect(() => { 
+        getUsers()
+    }, [])
+
     async function getUsers() {
         let users = await fetchNextData('users/usersList?page=1', {})
         setData(users.data)
@@ -24,6 +31,13 @@ export default function PageUsers() {
         setData(users.data)
         setOptions({ next: 'Siguiente', previous: 'Anterior', links: users.links })
     }
+    const handleEdit =(user)=> {
+        setOpen(true)
+        setEdit(!edit)
+        setDataEdit(user)
+    }
+
+    
 
 
     return (
@@ -32,9 +46,9 @@ export default function PageUsers() {
             <div className='justify-end'>
                 <button className="btn btn-sm  hanan-success" onClick={(e) => setOpen(true)}><i className='feather icon-user-plus'></i> Nuevo</button>
             </div>
-            <PaginateTable data={data} header={header} handleEdit={[]} editMode={[]} editStatus={[]} />
+            <PaginateTable data={data} header={header} handleEdit={handleEdit}  editStatus={[]} />
             <PaginateButtons options={options} fetchData={fetchData} />
-            <ModalUsers open={isOpen} setOpen={setOpen} reload={getUsers} />
+            <ModalUsers open={isOpen} setOpen={setOpen} reload={getUsers} editMode={edit} dataEdit={dataEdit} setEditMode={setEdit} />
         </Layout>
     )
 }

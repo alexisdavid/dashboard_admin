@@ -1,6 +1,8 @@
 import React,{ useEffect, useState} from 'react'
 import Refill from './Refill'
-export default function PaginateTable(props) {
+
+const PaginateTable=(props) =>{
+    
     const {data,header,handleEdit=()=>{}} = props
     const [columns,setColumns]= useState([])
 
@@ -34,3 +36,4 @@ export default function PaginateTable(props) {
      </>
     )
 }
+export default PaginateTable

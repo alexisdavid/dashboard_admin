@@ -36,6 +36,15 @@ export async function getMenus(){
     return 'Error'
   }
 }
+export async function getDepartments(){
+  const response = await request.get('departments/getDepartmentsAll')
+  if (response && response.statusCode==200) {
+    
+    return response.result
+  }else{
+    return 'Error'
+  }
+}
   
  
   

@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Modal from 'react-modal'
 import ToastComponent from '../../../../../components/toastComponent'
 import Request from '../../../../../utils/http'
+import { Consumer } from '../../../../../context'
 const request = new Request()
 
+Modal.setAppElement('body');
 const customStyles = {
   content: {
     top: '45%',
@@ -15,11 +17,13 @@ const customStyles = {
     borderRadius: '15px'
   },
 };
-export default function ModalUsers(props) {
-  Modal.setAppElement('body');
-  const { open = false, setOpen = () => { }, reload, data } = props
+ function ModalUsers(props) {
+  const { open = false, setOpen = () => { }, reload, editMode, dataEdit,setEditMode} = props
+  const {getDepartments} = props.context
 
   const [close, setClose] = useState(false)
+  const [departents, setDepartments] = useState([])
+  const [groups, setGroups] = useState([])
   const [user, setUser] = useState({
     id: 0,
     name: '',
@@ -35,7 +39,6 @@ export default function ModalUsers(props) {
     mensaje: '',
     tipo: 'success'
   })
-  const [edit, setEdit] = useState(true)
   const handleChange = (e) => setUser({ ...user, [e.target.name]: e.target.value })
 
   const handleSubmit = async () => {
@@ -49,9 +52,10 @@ export default function ModalUsers(props) {
       superUser: user.superUser == true ? 1 : 0,
       department: user.department,
       active: 0,
-      image: '',
+      image: ''
     }
-    const response = await request.post('users/store', data)
+  let response = ''
+     response = editMode ? await request.post('users/update', data) : await request.post('users/store', data)
     if (response && response.statusCode == 201) {
       setToast({ showToast: true, mensaje: 'Guardado con exito', tipo: 'success' })
       reload()
@@ -67,6 +71,7 @@ export default function ModalUsers(props) {
     }, 3000);
 
   }
+  
   const handleclose = () => {
     setUser({
       name: '',
@@ -77,20 +82,50 @@ export default function ModalUsers(props) {
       email: '',
       password: ''
     })
+    setEditMode(false)
     setOpen(false)
     setClose(false)
 
   }
+
+  const getInfoDepartment=async()=>{
+    let information
+    information = await getDepartments()
+  
+    if (information) {
+      setDepartments(information.data)
+      
+    }
+  }
+  //efects 
+  useEffect(() => {
+    if (open) {
+      getInfoDepartment()
+    }
+    if (editMode) {
+      setUser({...user,
+          id:dataEdit.id,
+          name: dataEdit.nombre,
+          superUser: dataEdit.superUser,
+          codUser: dataEdit.codigo,
+          department: dataEdit.dpto,
+          group: dataEdit.userGroup,
+          email: dataEdit.email
+      }) 
+    }
+  },[open])
+  useEffect(() => {
+      let grupos = departents.find(department => department.id == user.department)
+      if(grupos) setGroups(grupos.groupsList)
+  },[user.department])
+ 
   return (
     <>
 
       <ToastComponent showToast={toast.showToast} mensaje={toast.mensaje} tipo={toast.tipo} />
       <Modal isOpen={open} style={customStyles} overlayClassName="Overlay">
-        {!edit && <div className='col-md-12 justify-end mt-3'>
-          <button onClick={e => setOpen(false)} type="button" className="btn btn-outline-danger" title="btn btn-outline-danger" data-toggle="tooltip">
-            Cerrar
-          </button>
-        </div>}
+       
+       
         <div className="row p-4">
 
           <div className="form-group col-md-7">
@@ -109,12 +144,22 @@ export default function ModalUsers(props) {
           </div>
           <div className="form-group col-md-12">
             <label for="department">Departamento</label>
-            <input type="text" className="form-control" value={user.department} onChange={handleChange} id="department" name='department' />
+
+       
+            <select className="form-control" value={user.department} onChange={handleChange} id="department" name='department'>
+            <option value='0'>selecciona una opcion</option>
+              {departents.map((dep,key)=> <option key={key} value={dep.id}>{dep.departmentName}</option> )}
+            </select>
             {user.department == 0 && <small className="form-text text-danger">Campo Requerido.</small>}
           </div>
           <div className="form-group col-md-12">
             <label for="group">Grupo</label>
-            <input type="text" className="form-control" value={user.group} onChange={handleChange} id="group" name='group' />
+           
+            <select className="form-control" value={user.group} onChange={handleChange} id="group" name='group' >
+              <option value='0'> selecciona una opcion</option>
+              {groups.map((group,key)=> <option key={key} value={group.id}>{group.descriptions}</option> )}
+            </select>
+
             {user.group == 0 && <small className="form-text text-danger">Campo Requerido. </small>}
           </div>
           <div className="form-group col-md-12">
@@ -122,14 +167,14 @@ export default function ModalUsers(props) {
             <input type="text" className="form-control" value={user.email} onChange={handleChange} id="email" name='email' />
             {user.email.length < 1 && <small className="form-text text-danger">Campo Requerido. </small>}
           </div>
-          <div className="form-group col-md-12">
+         {!editMode && <div className="form-group col-md-12">
             <label for="password">Password</label>
             <input type="password" className="form-control" value={user.password} onChange={handleChange} id="password" name='password' />
             {user.password.length < 8 && <small className="form-text text-danger">Campo Requerido. Minimo 8 caracteres</small>}
-          </div>
+          </div>}
 
         </div>
-        {edit &&
+        
           <div className="row p-4">
             <div className='col-md-6 col-lg-6'>
               {!close ? <button type="submit" onClick={handleSubmit} className="btn hanan-success" title="Guardar Cambios" data-toggle="tooltip">
@@ -142,8 +187,9 @@ export default function ModalUsers(props) {
               </button>
             </div>
           </div>
-        }
+        
       </Modal>
     </>
   )
 }
+export default Consumer(ModalUsers)
